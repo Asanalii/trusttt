@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie-edge">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <title>Companion</title>
+</head>
+<body>
+<div class="container">
+  <h1 class="mb-4">Are you searching for a companion?</h1>
+  <a href="companion/newCompanion" class="btn btn-success">Find Companion</a>
+
+  <% companions.forEach(companion=>{ %>
+  <div class="card mt-4">
+    <div class="card-body">
+      <h4 class="card-title"><%= companion.location%></h4>
+      <div class="card-subtitle text-muted mb-2">
+        <%= companion.createdAt.toLocaleDateString() %>
+      </div>
+      <div class="card-text mb-2"><%= companion.destination %></div>
+
+      <form action="/companion/<%=companion.id%>?_method=DELETE"  class="d-inline " method="post">
+        <button type="submit" class="btn btn-danger">Delete</button>
+      </form>
+    </div>
+  </div>
+  <% })%>
+
+  <a href="/" class="btn btn-primary mt-4">Return Main Page</a>
+</div>
+</body>
+</html>
