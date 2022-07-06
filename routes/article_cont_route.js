@@ -12,7 +12,7 @@ router.get('/:slug',ArticleController.findBySlug)
 router.post('/',ArticleController.add)
 router.delete('/:id',ArticleController.delete);
 router.get('/edit/:id',ArticleController.edit)
-router.patch('/edit/:id',ArticleController.update)
+router.put('/edit/:id',ArticleController.update)
 
 
 
