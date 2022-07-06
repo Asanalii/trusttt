@@ -30,7 +30,7 @@ mongoose.connect(dbConfig.url, {
 }).catch(err => {
     console.log('Could not connect to the database', err);
     process.exit();
-});
+})
 
 app.use(express.static(__dirname+"/public"))
 
