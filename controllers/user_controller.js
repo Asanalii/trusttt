@@ -2,8 +2,16 @@ const path = require('path')
 const UserModel = require('../models/user')
 const passport = require("passport");
 // Create and Save a new user
-
-/*exports.create = async (req, res) => {
+// Retrieve all users from the database.
+exports.findAll = async (req, res) => {
+    try {
+        const user = await UserModel.find();
+        res.status(200).json(user);
+    } catch(error) {
+        res.status(404).json({message: error.message});
+    }
+};
+exports.create = async (req, res) => {
     if (!req.body.email && !req.body.firstName && !req.body.lastName && !req.body.userName && !req.body.password) {
         res.status(400).send({ message: "Content can not be empty!" })
     }
@@ -25,15 +33,7 @@ const passport = require("passport");
     });
 };
 
-// Retrieve all users from the database.
-exports.findAll = async (req, res) => {
-    try {
-        const user = await UserModel.find();
-        res.status(200).json(user);
-    } catch(error) {
-        res.status(404).json({message: error.message});
-    }
-};
+
 // Find a single User with an id
 exports.findOne = async (req, res) => {
     try {
@@ -84,7 +84,7 @@ exports.destroy = async (req, res) => {
             message: err.message
         });
     });
-};*/
+};
 
 exports.login = async (req, res) => {
     //level 5

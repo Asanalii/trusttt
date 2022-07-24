@@ -3,6 +3,9 @@ const mongoose=require('mongoose')
 const bodyParser =require('body-parser')
 const port = process.env.PORT || 5000;
 const ejs=require('ejs')
+const swaggerUi = require('swagger-ui-express')
+
+
 const methodOverride =require('method-override')
 //const http = require('http')
 
@@ -35,6 +38,9 @@ mongoose.connect(dbConfig.url, {
 })
 
 app.use(express.static(__dirname+"/public"))
+swaggerDocument = require('./swagger.json');
+
+
 
 app.use("/", require("./routes/root"));
 app.use("/login", require("./routes/login"));
@@ -42,6 +48,11 @@ app.use("/about", require("./routes/about"));
 app.use("/signup", require("./routes/signup"));
 app.use("/articles", require("./routes/article_cont_route"));
 app.use("/profile",require("./routes/profile"))
+app.use(
+    '/api-docs',
+    swaggerUi.serve,
+    swaggerUi.setup(swaggerDocument)
+);
 
 app.listen(port, () =>
     console.log(`App listening at http://localhost:${port}`)
