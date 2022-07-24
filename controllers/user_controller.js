@@ -3,7 +3,7 @@ const UserModel = require('../models/user')
 const passport = require("passport");
 // Create and Save a new user
 
-exports.create = async (req, res) => {
+/*exports.create = async (req, res) => {
     if (!req.body.email && !req.body.firstName && !req.body.lastName && !req.body.userName && !req.body.password) {
         res.status(400).send({ message: "Content can not be empty!" })
     }
@@ -84,11 +84,11 @@ exports.destroy = async (req, res) => {
             message: err.message
         });
     });
-};
+};*/
 
 exports.login = async (req, res) => {
     //level 5
-    let user =new UserModel({
+    let user = new UserModel({
         username:req.body.username,
         password:req.body.password
     })
@@ -113,8 +113,15 @@ exports.register = async (req, res) => {
             res.redirect("/signup")
         } else {
             passport.authenticate("local")(req, res, function () {
-                res.redirect("/")
+                res.redirect("/profile")
             });
         }
     })
+}
+
+exports.logout = async (req,res) => {
+    req.logout(function(err) {
+        if (err) { return next(err); }
+        res.redirect('/');
+    });
 }

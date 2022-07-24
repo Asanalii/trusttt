@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewpoint"
+          content="width=device-width, initial scale = 1.0">
+    <meta http-equiv="X-UA-Compatible"
+          content="ie=edge">
+    <script src ='https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css' rel='stylesheet' />
+    <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.1.0/mapbox-gl-directions.js"></script>
+    <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.1.0/mapbox-gl-directions.css" type="text/css">
+    <link rel="stylesheet" href="/css/index.css">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <title>Trust</title>
+    <style>
+
+    </style>
+</head>
+<body>
+
+<div id="map">
+    <div class="container">
+        <div class="box">
+            <ul class="ull">
+                <a href="articles" class="link-list"><li class="list">Articles</li></a>
+
+                <form id="logout" action="/user/logout" method="POST">
+                    <button type="submit" class="btn btn-dark">Sign out</button>
+                </form>
+            </ul>
+        </div>
+    </div>
+
+</div>
+
+
+<script>
+    let key = mapboxgl.accessToken ='pk.eyJ1IjoiYXlhc2hha2xkIiwiYSI6ImNsMXV2cjV0bzAzeHgzZGwzeDcwYW44aWUifQ.5Ze_b7U5IneSnjE5cMBEmQ';
+    navigator.geolocation.getCurrentPosition(successLocation, errorLocation, {enableHighAccuracy: true})
+
+    function successLocation(position){
+        console.log(position)
+        setupMap([position.coords.longitude, position.coords.latitude])
+    }
+
+    function errorLocation(){
+        setupMap([71.44,  51.16])
+    }
+
+    function setupMap(center){
+        const map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mapbox/streets-v11',
+            center: center,
+            zoom: 15
+        })
+
+        const nav = new mapboxgl.NavigationControl();
+        map.addControl(nav, 'bottom-right');
+
+        let directions = new MapboxDirections({
+            accessToken: mapboxgl.accessToken,
+        });
+        map.addControl(directions, 'bottom-left');
+
+
+        const geojson = {
+            type: 'FeatureCollection',
+            features: [
+                {
+                    type: 'Feature',
+                    geometry: {
+                        type: 'Point',
+                        coordinates: [-77.032, 38.913]
+                    },
+                    properties: {
+                        title: 'Mapbox',
+                        description: 'Washington, D.C.'
+                    }
+                },
+                {
+                    type: 'Feature',
+                    geometry: {
+                        type: 'Point',
+                        coordinates: [-122.414, 37.776]
+                    },
+                    properties: {
+                        title: 'Mapbox',
+                        description: 'San Francisco, California'
+                    }
+                }
+            ]
+        };
+
+
+        for (const feature of geojson.features) {
+            // create a HTML element for each feature
+            const el = document.createElement('div');
+            el.className = 'marker';
+
+            // make a marker for each feature and add to the map
+            new mapboxgl.Marker(el).setLngLat(feature.geometry.coordinates).addTo(map);
+        }
+    }
+</script>
+
+
+</body>
+</html>
